@@ -1,10 +1,9 @@
 from bookshelf.models import Book
 
-books = Book.objects.all()
+books = Book.objects.get(title='1984')
 
-for book in books:
-    print({
-        'Title': book.title,
-        'Author': book.author,
-        'Publication Year': book.publication_year,
+print({
+    'Title': book.title,
+    'Author': bookauthor,
+    'Publication Year': book.publication_year,
     })
