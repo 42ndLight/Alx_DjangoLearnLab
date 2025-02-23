@@ -7,10 +7,17 @@ def get_books_by_author(author):
 
 # List all books in a library.
 def get_books_in_library(library):
-    books = library.books
-    return books
+    try:    
+        library = Library.objects.get(name=library)
+        return library.books.all()
+    except Library.DoesNotExist:
+        return None
+         
 
 # Retrieve the librarian for a library
 def get_librarian(library):
-    librarian = library.librarian
-    return librarian
+    try:
+        library = Library.objects.get(name=library)
+        return library.librarian
+    except Library.DoesNotExist:
+        return None
