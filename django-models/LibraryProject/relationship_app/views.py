@@ -13,7 +13,7 @@ def booklist(request):
 
 class BookListView(ListView):
     model = Book, Library 
-    template_name = 'relationship_app/lib_detail.html'
+    template_name = 'relationship_app/library_detail.html'
     context_object_name = ['books', 'library']
     
 
