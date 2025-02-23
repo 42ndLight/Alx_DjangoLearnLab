@@ -54,9 +54,9 @@ class RegisterView(CreateView):
         return redirect('home')  # Redirect to home or dashboard page
 
 # User Login View
-class UserLoginView(LoginView):
+class LoginView(LoginView):
     template_name = 'relationship_app/login.html'
 
 # User Logout View
-class UserLogoutView(LogoutView):
+class LogoutView(LogoutView):
     next_page = reverse_lazy('login')  # Redirect to login page after logout
