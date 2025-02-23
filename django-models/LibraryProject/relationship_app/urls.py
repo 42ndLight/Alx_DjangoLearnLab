@@ -13,10 +13,10 @@ urlpatterns = [
     path('librarian/', views.librarian_view, name='librarian_view'),
     path('member/', views.member_view, name='member_view'),
     # URL for adding a book
-    path('add/', views.add_book, name='add_book'),
+    path('add_book/', views.add_book, name='add_book'),
 
     # URL for editing a book
-    path('edit/<int:book_id>/', views.edit_book, name='edit_book'),
+    path('edit_book/<int:book_id>/', views.edit_book, name='edit_book'),
 
     # URL for deleting a book
     path('delete/<int:book_id>/', views.delete_book, name='delete_book'),
