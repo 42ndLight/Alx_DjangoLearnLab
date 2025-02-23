@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic.detail import DetailView
 from  .models import Book
 from .models import Library
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
+from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView
 
@@ -42,10 +43,15 @@ class LibraryDetailView(DetailView):
         return Library.objects.get(id=library_id)
     
 
-class SignUpView(CreateView):
+class RegisterView(CreateView):
     form_class = UserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'register.html'
+    template_name = 'relationship_app/register.html'
+    success_url = reverse_lazy('login')  # Redirect to login page after successful registration
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)  # Automatically log in the user after registration
+        return redirect('home')  # Redirect to home or dashboard page
 
 # User Login View
 class UserLoginView(LoginView):
