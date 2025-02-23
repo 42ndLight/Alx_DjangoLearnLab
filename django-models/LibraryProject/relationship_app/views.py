@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import CreateView
+
 
 # Create your views here.
 def list_books(request):
@@ -43,15 +43,16 @@ class LibraryDetailView(DetailView):
         return Library.objects.get(id=library_id)
     
 
-class RegisterView(CreateView):
-    form_class = UserCreationForm
-    template_name = 'relationship_app/register.html'
-    success_url = reverse_lazy('login')  # Redirect to login page after successful registration
-
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)  # Automatically log in the user after registration
-        return redirect('home')  # Redirect to home or dashboard page
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Automatically log in the user after registration
+            return redirect('home')  # Redirect to home or dashboard page
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 # User Login View
 class LoginView(LoginView):
