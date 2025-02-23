@@ -6,14 +6,14 @@ def get_books_by_author(author):
     return books
 
 # List all books in a library.
-def get_books_in_library(library):
-      library = Library.objects.get(name=library)
+def get_books_in_library(library_name):
+      library = Library.objects.get(name=library_name)
       return library.books.all()
     
          
 
 # Retrieve the librarian for a library
-def get_librarian(library):    
-    library = Library.objects.get(name=library)
+def get_librarian(library_name):    
+    library = Library.objects.get(name=library_name)
     return library.librarian
     
