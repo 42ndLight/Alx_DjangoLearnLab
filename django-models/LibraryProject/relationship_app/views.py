@@ -1,24 +1,33 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import DetailView
 from  .models import Book
 from .models import Library
 
 # Create your views here.
 def booklist(request):
     book = Book.objects.all()
-    context = {
-        'book': book
-    }
-    return render(request, 'relationship_app/list_books.html', context)
+ 
+    return render(request, 'relationship_app/list_books.html', { 'book': book })
 
 
-class BookListView(ListView):
+class BookDetailView(DetailView):
     model = Book, Library 
     template_name = 'relationship_app/library_detail.html'
     context_object_name = ['books', 'library']
     
-
     def get_context_data(self, **kwargs):
+        """
+        Add additional context data to the view.
+
+        This method extends the context data provided by the parent class
+        to include specific library details.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            dict: The context data dictionary with added library details.
+        """
         context = super().get_context_data(**kwargs)
         context['library'] = self.get_library()  # Fetch specific library details
         return context
