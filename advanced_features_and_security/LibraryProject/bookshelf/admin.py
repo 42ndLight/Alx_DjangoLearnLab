@@ -12,7 +12,7 @@ class BookAdmin(admin.ModelAdmin):
     # Add filtering options for genre and publication date
     list_filter = ("title", "publication_year")
 
-class CustomAdmin(UserAdmin):
+class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ['username', 'email', 'date_of_birth', 'is_staff', 'is_active']
     fieldsets = (
@@ -32,4 +32,4 @@ class CustomAdmin(UserAdmin):
 
 # Register the model with the customized admin settings
 admin.site.register(Book, BookAdmin)
-admin.site.register(CustomUser, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
