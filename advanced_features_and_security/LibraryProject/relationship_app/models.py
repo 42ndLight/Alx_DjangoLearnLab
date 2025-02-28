@@ -80,14 +80,13 @@ class CustomUserManager(BaseUserManager):
 
         
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'    
-    REQUIRED_FIELDS = ['username','password', 'date_of_birth']
+    USERNAME_FIELD = 'username'    
+    REQUIRED_FIELDS = ['password', 'date_of_birth']
 
 
 
