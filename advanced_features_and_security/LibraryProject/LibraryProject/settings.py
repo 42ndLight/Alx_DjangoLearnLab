@@ -30,6 +30,11 @@ X_FRAME_OPTIONS = 'DENY'
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
 
 # Define a restrictive CSP policy
 CSP_DEFAULT_SRC = ("'self'",)
@@ -37,7 +42,7 @@ CSP_SCRIPT_SRC = ("'self'", "https://trusted-cdn.com")
 CSP_STYLE_SRC = ("'self'", "https://trusted-cdn.com")
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', ]
 
 
 # Application definition
@@ -49,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'bookshelf', 
     'relationship_app',
     'csp',
