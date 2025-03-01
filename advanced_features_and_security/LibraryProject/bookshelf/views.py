@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.db.models import Q
-from bookshelf.forms import ExampleForm
+from .forms import ExampleForm
 
 # Create your views here.
 def index(request):
@@ -38,4 +38,4 @@ def book_search(request):
     books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
 
     
-    return render(request, 'bookshelf/book_list.html', {'books': books})
+    return render(request, 'bookshelf/form_example.html', {'books': books})
