@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from django.db.models import Q
 from bookshelf.forms import BookForm
 
 # Create your views here.
@@ -25,4 +26,16 @@ def edit_book(request, book_id):
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
     books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+
+def book_search(request):
+    query = request.GET.get('q', '').strip()
+
+    if not query:
+        return render(request, 'bookshelf/book_list.html', {'books': []})
+    
+
+    books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+
+    
     return render(request, 'bookshelf/book_list.html', {'books': books})

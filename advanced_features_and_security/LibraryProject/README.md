@@ -44,4 +44,62 @@ The following groups are used to manage permissions:
                ('can_view', 'Can view book list'),
            ]
    
+# Security Measures
+
+## 1. Secure Django Settings
+- DEBUG is set to False in production.
+- CSRF and SESSION cookies are secured.
+- XSS protection via `SECURE_BROWSER_XSS_FILTER`.
+
+## 2. Secure Forms
+- CSRF tokens are included in all forms.
+
+## 3. Secure Views
+- SQL injection is prevented by using Django ORM.
+
+## 4. Content Security Policy
+- CSP is enforced via django-csp middleware.
+
+
+## Testing 
+
+1. Cross-Site Scripting (XSS) TestCase
+
+Input: <script>alert('XSS')</script>
+
+Location: Any form field (e.g., search, comments, user input fields)
+
+Expected Outcome:
+
+The script should not execute.
+
+The input should be properly sanitized or escaped.
+
+If the script executes, it indicates a vulnerability.
+
+2. SQL Injection TestCase
+
+Input: '; DROP TABLE bookshelf_book; --
+
+Location: Search input field or any field that interacts with the database.
+
+Expected Outcome:
+
+The database query should not be altered.
+
+No error messages or unintended behavior should occur.
+
+If the query executes and alters the database, it indicates a vulnerability.
+
+3. CSRF Protection TestCase
+
+Action: Attempt to submit a POST request without including a CSRF token.
+
+Expected Outcome:
+
+The request should be rejected with a 403 Forbidden error.
+
+If the request succeeds, CSRF protection is not properly enforced.
+
+
 
