@@ -37,7 +37,7 @@ CSP_SCRIPT_SRC = ("'self'", "https://trusted-cdn.com")
 CSP_STYLE_SRC = ("'self'", "https://trusted-cdn.com")
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition

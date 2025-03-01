@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.db.models import Q
-from bookshelf.forms import BookForm
+from bookshelf.forms import ExampleForm
 
 # Create your views here.
 def index(request):
@@ -15,12 +15,12 @@ def index(request):
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
-        form = BookForm(request.POST, instance=book)
+        form = ExampleForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
             return redirect('book_detail', book_id=book.id)
     else:
-        form = BookForm(instance=book)
+        form = ExampleForm(instance=book)
     return render(request, 'bookshelf/edit_book.html', {'form': form})
 
 @permission_required('bookshelf.can_view', raise_exception=True)

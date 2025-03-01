@@ -4,13 +4,13 @@ from .models import Book, CustomUser
 
 class BookAdmin(admin.ModelAdmin):
     # Display these fields in the admin list view
-    list_display = ("title", "author", "publication_year")
+    list_display = ("title", "author", "published_date")
 
     # Enable search functionality on title and author
     search_fields = ("title", "author")
 
     # Add filtering options for genre and publication date
-    list_filter = ("title", "publication_year")
+    list_filter = ("title", "published_date")
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
