@@ -21,3 +21,8 @@ def edit_book(request, book_id):
     else:
         form = BookForm(instance=book)
     return render(request, 'bookshelf/edit_book.html', {'form': form})
+
+@permission_required('bookshelf.can_view', raise_exception=True)
+def book_list(request):
+    books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})

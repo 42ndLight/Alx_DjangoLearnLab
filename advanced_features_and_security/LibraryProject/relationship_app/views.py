@@ -14,8 +14,7 @@ from .forms import BookForm
 
 # Create your views here.
 def list_books(request):
-    book = Book.objects.all()
- 
+    book = Book.objects.all() 
     return render(request, 'relationship_app/list_books.html', { 'book': book })
 
 
