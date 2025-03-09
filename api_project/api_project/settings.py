@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
+DEFAULT_AUTHENTICATION_CLASSES = (
+    'rest_framework.authentication.TokenAuthentication',
+)
 
 SECURE_SSL_REDIRECT = False
 CSRF_COOKIE_SECURE = False  
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
