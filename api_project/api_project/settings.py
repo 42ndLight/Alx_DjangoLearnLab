@@ -35,6 +35,13 @@ SECURE_SSL_REDIRECT = False
 CSRF_COOKIE_SECURE = False  
 SESSION_COOKIE_SECURE = False
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+
 
 
 
@@ -50,6 +57,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'rest_framework.authtoken',
+   
+    
 ]
 
 MIDDLEWARE = [
