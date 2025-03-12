@@ -1,4 +1,3 @@
-
 from django.db import models
 
 # The Author model represents an author with a name.
