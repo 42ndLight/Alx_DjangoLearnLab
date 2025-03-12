@@ -20,6 +20,8 @@ class BookSerializer(serializers.ModelSerializer):
 # The AuthorSerializer is used to serialize and deserialize Author instances.
 # It converts Author model instances into JSON format and vice versa.
 class AuthorSerializer(serializers.ModelSerializer):
+    book = BookSerializer(many=True, read_only=True)
+
     class Meta:
         model = Author
-        fields = ['name']
+        fields = ['id', 'name', 'book']
