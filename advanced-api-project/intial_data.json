@@ -1,0 +1,72 @@
+[
+    {
+        "model": "api.author",
+        "pk": 1,
+        "fields": {
+            "Name": "J.K. Rowling"
+        }
+    },
+    {
+        "model": "api.book",
+        "pk": 1,
+        "fields": {
+            "title": "Harry Potter and the Philosopher's Stone",
+            "publication_year": 1997,
+            "author": 1
+        }
+    },
+    {
+        "model": "api.book",
+        "pk": 2,
+        "fields": {
+            "title": "Harry Potter and the Chamber of Secrets",
+            "publication_year": 1998,
+            "author": 1
+        }
+    },
+    {
+        "model": "api.book",
+        "pk": 3,
+        "fields": {
+            "title": "Harry Potter and the Prisoner of Azkaban",
+            "publication_year": 1999,
+            "author": 1
+        }
+    },
+    {
+        "model": "api.book",
+        "pk": 4,
+        "fields": {
+            "title": "Harry Potter and the Goblet of Fire",
+            "publication_year": 2000,
+            "author": 1
+        }
+    },
+    {
+        "model": "api.book",
+        "pk": 5,
+        "fields": {
+            "title": "Harry Potter and the Order of the Phoenix",
+            "publication_year": 2003,
+            "author": 1
+        }
+    },
+    {
+        "model": "api.book",
+        "pk": 6,
+        "fields": {
+            "title": "Harry Potter and the Half-Blood Prince",
+            "publication_year": 2005,
+            "author": 1
+        }
+    },
+    {
+        "model": "api.book",
+        "pk": 7,
+        "fields": {
+            "title": "Harry Potter and the Deathly Hallows",
+            "publication_year": 2007,
+            "author": 1
+        }
+    }
+]
