@@ -3,17 +3,12 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
-class ReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        return request.method in SAFE_METHODS
-    
-
 class BookList(ListView):
     model = Book
     template_name = 'book_list.html'
@@ -24,7 +19,7 @@ class BookList(ListView):
     ordering_fields = ['title', 'price']
 
     @api_view(['GET'])
-    @permission_classes([IsAuthenticated|ReadOnly])
+    @permission_classes([IsAuthenticatedOrReadOnly])
     def book_list(request):
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)
@@ -39,7 +34,7 @@ class BookDetail(DetailView):
     context_object_name = 'book'
 
     @api_view(['GET'])
-    @permission_classes([IsAuthenticated|ReadOnly])
+    @permission_classes([IsAuthenticatedOrReadOnly])
     def book_detail(request, pk):
         book = Book.objects.get(pk=pk)
         serializer = BookSerializer(book)
