@@ -1,45 +1,62 @@
 from django.shortcuts import render
-from rest_framework import generics
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.response import Response
 
 # Create your views here.
-class BookListView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+class BookList(ListView):
+    model = Book
+    template_name = 'book_list.html'
+    context_object_name = 'books'
 
-    def list_books(self, request):
+    def book_list(request):
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)
         return Response(serializer.data)
     
-    def create_book(self, request):
-        serializer = BookSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+class BookDetail(DetailView):
+    model = Book
+    template_name = 'book_detail.html'
+    context_object_name = 'book'
 
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-    def retrieve_book(self, request, pk=None):
-        book = Book.objects.get(id=pk)
+    def book_detail(request, pk):
+        book = Book.objects.get(pk=pk)
         serializer = BookSerializer(book)
         return Response(serializer.data)
     
-    def update_book(self, request, pk=None):
-        book = Book.objects.get(id=pk)
+class BookCreate(CreateView):
+    model = Book
+    template_name = 'book_form.html'
+    fields = ['title', 'author', 'pages', 'price']
+
+    def book_create(request):
+        serializer = BookSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+class BookUpdate(UpdateView):
+    model = Book
+    template_name = 'book_form.html'
+    fields = ['title', 'author', 'pages', 'price']
+
+    def book_update(request, pk):
+        book = Book.objects.get(pk=pk)
         serializer = BookSerializer(instance=book, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=200)
-        return Response(serializer.errors, status=400)
-    
-    def delete_book(self, request, pk=None):
-        book = Book.objects.get(id=pk)
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+class BookDelete(DeleteView):
+    model = Book
+    template_name = 'book_confirm_delete.html'
+    success_url = '/'
+
+    def book_delete(request, pk):
+        book = Book.objects.get(pk=pk)
         book.delete()
-        return Response(status=204)
-    
+        return Response('Book deleted successfully')
+
