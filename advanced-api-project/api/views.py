@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .serializers import BookSerializer
 from django_filters import rest_framework
+from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -19,7 +20,7 @@ class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     filterset_class = BookFilter
     search_fields = ['title', 'author', 'publication_year']
     ordering_fields = ['title', 'author', 'publication_year']
