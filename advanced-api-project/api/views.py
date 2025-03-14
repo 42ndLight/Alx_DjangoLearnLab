@@ -1,38 +1,39 @@
 from django.shortcuts import render
 from .models import Book
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django_filters.views import FilterView
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from .filters import BookFilter
 from .forms import BookForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework.generics import ListAPIView
+from .serializers import BookSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 
-# Create your views here.
-class BookList(LoginRequiredMixin, ListView, FilterView):
+
+class BookList(ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
-    model = Book
-    template_name = 'book_list.html'  
-    context_object_name = 'books'
-    filterset_class = BookFilter 
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = BookFilter
+    search_fields = ['title', 'author', 'publication_year']
+    ordering_fields = ['title', 'author', 'publication_year']
+
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        search_query = self.request.GET.get('search')
-        if search_query:
-            queryset = queryset.filter(
-                title__icontains=search_query
-            ) | queryset.filter(
-                author__name__icontains=search_query
-            ) | queryset.filter(
-                publication_year__icontains=search_query
-            )
-        # Add ordering
-        ordering = self.request.GET.get('ordering')
-        if ordering in ['title', 'publication_year']:
-            queryset = queryset.order_by(ordering)
-        return queryset
+        title = self.kwargs['title']
+        author = self.kwargs['author']
+        publication_year = self.kwargs['publication_year']
+        if title:
+            return Book.objects.filter(title=title)
+        elif author:
+            return Book.objects.filter(author=author)
+        elif publication_year:
+            return Book.objects.filter(publication_year=publication_year)
+        else:
+            return Book.objects.all()
 
 
     
