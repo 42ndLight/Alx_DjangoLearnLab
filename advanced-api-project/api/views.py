@@ -4,7 +4,6 @@ from .serializers import BookSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import status
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 from .filters import BookFilter
@@ -51,6 +50,7 @@ class BookDetail(LoginRequiredMixin, DetailView):
     
 
 class BookCreate(LoginRequiredMixin, CreateView):
+    permission_classes = [IsAuthenticated]
     model = Book
     form_class = BookForm  
     template_name = 'book_form.html' 
@@ -64,6 +64,7 @@ class BookCreate(LoginRequiredMixin, CreateView):
         serializer.save(created_by=self.request.user)
 
 class BookUpdate(LoginRequiredMixin, UpdateView):
+    permission_classes = [IsAuthenticated]
     model = Book
     form_class = BookForm 
     template_name = 'book_form.html' 
@@ -73,6 +74,7 @@ class BookUpdate(LoginRequiredMixin, UpdateView):
         
 
 class BookDelete(LoginRequiredMixin, DeleteView):
+    permission_classes = [IsAuthenticated]
     model = Book
     template_name = 'book_confirm_delete.html'  
     success_url = reverse_lazy('book-list') 
