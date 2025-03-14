@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from .models import Book
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
-from django.views.generic import  DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 from .filters import BookFilter
 from .forms import BookForm
@@ -11,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
-class BookList(LoginRequiredMixin, FilterView):
+class BookList(LoginRequiredMixin, ListView, FilterView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     model = Book
     template_name = 'book_list.html'  
