@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 
-class BookList(ListAPIView):
+class BookListView(ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Book.objects.all()
     serializer_class = BookSerializer
