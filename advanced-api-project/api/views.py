@@ -5,14 +5,16 @@ from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from .filters import BookFilter
 from .forms import BookForm
 from django.urls import reverse_lazy
+from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
-from rest_framework.generics import ListAPIView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .serializers import BookSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 
 
 
-class BookListView(ListAPIView):
+class BookListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Book.objects.all()
     serializer_class = BookSerializer
