@@ -1,10 +1,8 @@
 from django.shortcuts import render
 from .models import Book
-from .serializers import BookSerializer
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import  DetailView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 from .filters import BookFilter
 from .forms import BookForm
