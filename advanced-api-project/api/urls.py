@@ -1,10 +1,15 @@
 from django.contrib import admin
-from django.urls import path, include
-from .views import BookList, BookDetail, BookCreate, BookUpdate, BookDelete
+from .views import BookCreate, BookDetail, BookListView, BookUpdate, BookDelete
+from rest_framework import routers
+from django.urls import path
+
+router = routers.DefaultRouter()
+router.register(r'books', BookListView)
+
 
 
 urlpatterns = [
-    path('books/', BookList.as_view(), name='book_list'),
+    path('books/', BookListView.as_view(), name='book_list'),
     path('books/<int:pk>/', BookDetail.as_view(), name='book_detail'),
     path('books/create/', BookCreate.as_view(), name='book_create'),
     path('books/update/<int:pk>/', BookUpdate.as_view(), name='book_update'),
