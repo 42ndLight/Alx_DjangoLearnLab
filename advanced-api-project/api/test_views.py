@@ -4,7 +4,7 @@ from rest_framework.test import APIRequestFactory
 
 
 # Create your tests here.
-class BookTestCase(TestCase):
+class APITestCase(TestCase):
     def setUp(self):
         Book.objects.create(title='The Great Gatsby', author='F. Scott Fitzgerald', publication_year='1925')
         Book.objects.create(title='The Catcher in the Rye', author='J.D. Salinger', publication_year='1951')
