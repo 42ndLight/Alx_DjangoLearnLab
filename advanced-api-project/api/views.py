@@ -4,52 +4,78 @@ from .serializers import BookSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import filters
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework import status
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django_filters.views import FilterView
+from .filters import BookFilter
+from .forms import BookForm
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # Create your views here.
-class BookList(ListAPIView):
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['author', 'title']
-    search_fields = ['title', 'author', 'publication_year']
-    ordering_fields = ['title', 'publication_year']
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+class BookList(LoginRequiredMixin, FilterView):
     permission_classes = [IsAuthenticatedOrReadOnly]
-
-
-    
-class BookDetail(RetrieveAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    model = Book
+    template_name = 'book_list.html'  
+    context_object_name = 'books'
+    filterset_class = BookFilter 
 
     def get_queryset(self):
-        return Book.objects.filter(pk=self.kwargs['pk'])
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('search')
+        if search_query:
+            queryset = queryset.filter(
+                title__icontains=search_query
+            ) | queryset.filter(
+                author__name__icontains=search_query
+            ) | queryset.filter(
+                publication_year__icontains=search_query
+            )
+        # Add ordering
+        ordering = self.request.GET.get('ordering')
+        if ordering in ['title', 'publication_year']:
+            queryset = queryset.order_by(ordering)
+        return queryset
+
 
     
-    
-class BookCreate(CreateAPIView):
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]
+class BookDetail(LoginRequiredMixin, DetailView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    model = Book
+    template_name = 'book_detail.html' 
+    context_object_name = 'book'
 
+    def get_queryset(self):
+        return Book.objects.filter(pk=self.kwargs['pk'])   
+    
+
+class BookCreate(LoginRequiredMixin, CreateView):
+    model = Book
+    form_class = BookForm  
+    template_name = 'book_form.html' 
+    success_url = reverse_lazy('book-list') 
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+    
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(created_by=self.request.user)
 
+class BookUpdate(LoginRequiredMixin, UpdateView):
+    model = Book
+    form_class = BookForm 
+    template_name = 'book_form.html' 
+    success_url = reverse_lazy('book-list') 
+  
 
-class BookUpdate(UpdateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]
+        
 
-    def perform_update(self, serializer):
-        serializer.save()
-    
-class BookDelete(DestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]
+class BookDelete(LoginRequiredMixin, DeleteView):
+    model = Book
+    template_name = 'book_confirm_delete.html'  
+    success_url = reverse_lazy('book-list') 
 
     def perform_destroy(self, instance):
         instance.delete()
