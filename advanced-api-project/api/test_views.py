@@ -4,6 +4,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from api.models import Book, Author
 from api.serializers import BookSerializer
+from django.contrib.auth.models import User
 
 class BookAPITestCase(TestCase):
     def setUp(self):
@@ -16,6 +17,7 @@ class BookAPITestCase(TestCase):
         self.book2 = Book.objects.create(title="The Catcher in the Rye", publication_year=1951, author=self.author)
         self.book3 = Book.objects.create(title="To Kill a Mockingbird", publication_year=1960, author=self.author)
         self.book4 = Book.objects.create(title="1984", publication_year=1949, author=self.author)
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
 
     # Test CRUD Operations
 
@@ -111,26 +113,11 @@ class BookAPITestCase(TestCase):
 
     # Test Permissions and Authentication
 
-    def test_unauthenticated_user_cannot_create_book(self):
-        """
-        Test that unauthenticated users cannot create books.
-        """
-        self.client.force_authenticate(user=None)  # Ensure no user is authenticated
-        url = reverse('book-create')
-        data = {
-            "title": "New Book",
-            "publication_year": 2023,
-            "author": self.author.id
-        }
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
     def test_authenticated_user_can_create_book(self):
         """
         Test that authenticated users can create books.
         """
-        user = User.objects.create_user(username='testuser', password='testpassword')
-        self.client.force_authenticate(user=user)
+        self.client.login(username='testuser', password='testpassword')
         url = reverse('book-create')
         data = {
             "title": "New Book",
@@ -139,3 +126,18 @@ class BookAPITestCase(TestCase):
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Book.objects.count(), 5)
+
+    def test_unauthenticated_user_cannot_create_book(self):
+        """
+        Test that unauthenticated users cannot create books.
+        """
+        self.client.logout()  # Ensure no user is authenticated
+        url = reverse('book-create')
+        data = {
+            "title": "New Book",
+            "publication_year": 2023,
+            "author": self.author.id
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
