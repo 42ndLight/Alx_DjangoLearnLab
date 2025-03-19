@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <h2>Add a New Post</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Renders the form fields -->
+        <button type="submit">Submit</button>
+    </form>
+
+    <br>
+    <a href="{% url 'index' %}">Back to Posts</a>
+{% endblock %}
