@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, ProfileForm
@@ -15,7 +14,7 @@ def register(request):
             return redirect('profile')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'blog/signup.html', {'form': form})
+    return render(request, 'blog/register.html', {'form': form})
 
 def login(request):
     if request.method == 'POST':
