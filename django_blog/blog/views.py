@@ -18,7 +18,7 @@ def register(request):
             return redirect('profile')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'blog/register.html', {'form': form})
+    return render(request, 'blog/registation/register.html', {'form': form})
 
 def user_login(request):
     if request.method == 'POST':
@@ -29,7 +29,7 @@ def user_login(request):
             return redirect(next_url)
     else:
         form = AuthenticationForm()
-    return render(request, 'blog/login.html', {'form': form})
+    return render(request, 'blog/registration/login.html', {'form': form})
 
 def user_logout(request):
     logout(request)
@@ -44,7 +44,7 @@ def profile_view(request):
             return redirect('profile')
     else:
         form = ProfileForm(instance=request.user)
-    return render(request, 'blog/profile.html', {'form': form}) 
+    return render(request, 'blog/registration/profile.html', {'form': form}) 
 
 
 class ListPostView(ListView):
