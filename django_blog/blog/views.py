@@ -124,7 +124,7 @@ class DeletePostView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return redirect('index')
     
 
-class ListCommentView(ListView):
+class CommentListView(ListView):
     model = Comment
     template_name = 'blog/comment.html'
     context_object_name = 'comments'
@@ -140,13 +140,13 @@ class ListCommentView(ListView):
         context['post'] = self.post
         return context
 
-class DetailCommentView(DetailView):
+class CommentDetailView(DetailView):
     model = Comment
     template_name = 'blog/detail_comment.html'
     context_object_name = 'comment'
 
 
-class CreateCommentView(LoginRequiredMixin, CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
     template_name = 'blog/create_comment.html'
@@ -162,7 +162,7 @@ class CreateCommentView(LoginRequiredMixin, CreateView):
     
     
 
-class UpdateCommentView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
    model = Comment
    form_class = CommentForm
    template_name = 'blog/update_comment.html'
@@ -175,7 +175,7 @@ class UpdateCommentView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
        return reverse('post-detail', kwargs={'pk': self.kwargs['post_id']})
    
 
-class DeleteCommentView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
     template_name = 'blog/delete_comment.html'
     
