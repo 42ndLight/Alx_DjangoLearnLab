@@ -1,0 +1,13 @@
+<!-- blog/comment.html -->
+<h1>Comments for Post: {{ post.title }}</h1>
+
+<ul>
+    {% for comment in comments %}
+        <li>
+            <strong>{{ comment.author }}</strong> - {{ comment.created_at }}
+            <p>{{ comment.content }}</p>
+        </li>
+    {% empty %}
+        <li>No comments yet.</li>
+    {% endfor %}
+</ul>
