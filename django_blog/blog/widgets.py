@@ -1,3 +1,5 @@
+from django.forms import TextInput
+
 class TagWidget(TextInput):
     class Media:
         css = {
