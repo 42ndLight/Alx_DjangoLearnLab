@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Post, Comment
 from taggit.forms import TagField
+from django.forms.widgets import TextInput
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -24,7 +25,10 @@ class ProfileForm(forms.ModelForm):
         fields = ['username', 'email']
 
 class PostForm(forms.ModelForm):
-    tags = TagField(required=False)
+    tags = TagField(
+                    required=False,
+                    widget=TextInput(attrs={'placeholder': 'Enter tags separated by commas'})
+                    )
 
     class Meta:
         model = Post
