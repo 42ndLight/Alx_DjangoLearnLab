@@ -2,9 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Post, Comment
-from taggit.forms import TagField
-from django_select2.forms import Select2TagWidget
 from django.forms import TextInput
+from taggit.forms import TagField
 
 class TagWidget(TextInput):
     class Media:
@@ -37,7 +36,7 @@ class ProfileForm(forms.ModelForm):
         fields = ['username', 'email']
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(widget=TagWidget())
+    tags = TagField(widget=TagWidget())
 
     class Meta:
         model = Post
