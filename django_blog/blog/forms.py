@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Post, Comment
 from taggit.forms import TagField
-from django.forms.widgets import TextInput
 from django_select2.forms import Select2TagWidget
 
 class CustomUserCreationForm(UserCreationForm):
