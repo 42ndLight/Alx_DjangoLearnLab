@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import Post, Comment
 from taggit.forms import TagField
 from django.forms.widgets import TextInput
+from django_select2.forms import Select2TagWidget
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -25,10 +26,7 @@ class ProfileForm(forms.ModelForm):
         fields = ['username', 'email']
 
 class PostForm(forms.ModelForm):
-    tags = TagField(
-                    required=False,
-                    widget=TextInput(attrs={'placeholder': 'Enter tags separated by commas'})
-                    )
+    tags = TagField(widget=Select2TagWidget)
 
     class Meta:
         model = Post
