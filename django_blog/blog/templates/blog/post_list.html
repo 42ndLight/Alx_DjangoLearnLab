@@ -5,3 +5,7 @@
     <p>{{ post.content }}</p>
     <small>Posted on {{ post.date_posted }}</small>
 {% endfor %}
+<form action="{% url 'search_posts' %}" method="GET">
+    <input type="text" name="q" placeholder="Search posts..." value="{{ query }}">
+    <button type="submit">Search</button>
+</form>

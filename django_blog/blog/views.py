@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post, Comment
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import login, logout
-
+from django.db.models import Q
 
 def register(request):
     if request.method == 'POST':
@@ -187,3 +187,20 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def get_success_url(self):
         return reverse('post-detail', kwargs={'pk': self.kwargs['post_id']})
     
+def search_posts(request):
+    query  =request.GET.get('q', '')
+    if query:
+        result = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)               
+        ).distinct()
+    else:
+        results = Post.objects.none()
+    
+    return render(request, 'blog/search_results.html', {'results': results, 'query': query})
+
+
+def tag_posts(request, tag_name):
+    posts = Post.objects.filter(tags__name=tag_name)
+    return render(request, 'blog/tag_posts.html', {'posts': posts, 'tag_name': tag_name})
