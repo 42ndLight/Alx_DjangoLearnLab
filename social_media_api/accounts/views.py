@@ -25,7 +25,7 @@ class LoginUserView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.user)
         serializer.is_valid(raise_exception=True)
         user.serializer.save()
-        token = Token.objects.get(user=user)
+        token, created = Token.objects.get_or_create(user=user)
         return Response({
             'user': UserSerializer(user).data,
             'token':token.key
