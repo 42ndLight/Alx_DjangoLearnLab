@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import RegisterSerializer, LoginSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from .serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
 
 # Create your views here.
 class RegisterUserView(generics.CreateAPIView):
@@ -28,5 +30,12 @@ class LoginUserView(generics.GenericAPIView):
             'user': UserSerializer(user).data,
             'token':token.key
                     })
-    
+
+class ProfileUserView(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+      
 
