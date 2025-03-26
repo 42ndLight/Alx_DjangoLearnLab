@@ -3,7 +3,7 @@ from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 from.models import CustomUser
 from rest_framework.response import Response 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 from rest_framework.authtoken.models import Token
 from .serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
 
@@ -36,16 +36,16 @@ class LoginUserView(generics.GenericAPIView):
 
 class ProfileUserView(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user
       
 class FollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
-        user_to_follow = get_object_or_404(CustomUser, id=user_id)
+        user_to_follow = get_object_or_404(CustomUser.objects.all(), id=user_id)
 
         if request.user == user_to_follow:
             return Response({"error" : "You cant Follow YourSelf!!"}, status=status.HTTP_400_BAD_REQUEST)
@@ -57,10 +57,10 @@ class FollowUserView(generics.GenericAPIView):
         return Response({"status" : "Success, You now Follow {user_to_follow.userame}"}, status=status.HTTP_200_OK)
 
 class UnfollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
-        user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
+        user_to_unfollow = get_object_or_404(CustomUser.objects.all(), id=user_id)
 
         if not request.user.following.filter(id=user_id).exists():
             return Response({"error" : "You are not following this user"}, status=status.HTTP_400_BAD_REQUEST)
