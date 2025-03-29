@@ -5,6 +5,8 @@ from rest_framework import permissions
 from rest_framework import generics, status
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
 from .serializers import PostSerializer, CommentSerializer, LikeSerializer
 
 # Create your views here.
@@ -39,6 +41,15 @@ class LikePostView(generics.CreateAPIView):
             return Response(
                 {'detail': 'You have already liked this post.'},
                 status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if request.user != post.author:
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb="liked your post",
+                target_content_type=ContentType.objects.get_for_model(post),
+                target_object_id=post.id
             )
         
         serializer = self.get_serializer(like)
