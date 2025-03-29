@@ -3,7 +3,6 @@ from rest_framework import viewsets
 from .models import Post, Comment, Like
 from rest_framework import permissions  
 from rest_framework import generics, status
-from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
@@ -33,9 +32,9 @@ class LikePostView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        post = generics.get_object_or_404(Post, pk=self.kwargs['post_id'])
 
-        like, created = Like.objects.create(user=request.user, post=post)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
 
         if not created:
             return Response(
@@ -59,8 +58,8 @@ class UnlikePostView(generics.DestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
-        return get_object_or_404(
+        post = generics.get_object_or_404(Post, pk=pk)
+        return generics.get_object_or_404(
             Like,
             user=self.request.user,
             post=post
