@@ -2,7 +2,7 @@ services:
   - type: web
     name: social_media_api
     runtime: python
-buildCommand: "./socila_media_api/build.sh"
+buildCommand: "./social_media_api/build.sh"
    startCommand: "gunicorn social_media_api.wsgi:application"
     envVars:
       - key: DJANGO_SECRET_KEY
