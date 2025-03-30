@@ -32,6 +32,8 @@ SECURE_SSL_REDIRECT = True  # Force HTTPS
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '159.65.242.254:5000']
+
 
 # Application definition
 
