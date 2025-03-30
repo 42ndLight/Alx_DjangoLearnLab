@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian View</title>
+    <link rel="stylesheet" href="{% static 'relationship_app/css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome, Librarian</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'relationship_app:dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'relationship_app:manage_books' %}">Manage Books</a></li>
