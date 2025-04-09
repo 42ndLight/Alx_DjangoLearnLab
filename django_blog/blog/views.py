@@ -18,7 +18,7 @@ def register(request):
             return redirect('profile')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'blog/registation/register.html', {'form': form})
+    return render(request, 'blog/register.html', {'form': form})
 
 def user_login(request):
     if request.method == 'POST':
@@ -29,7 +29,7 @@ def user_login(request):
             return redirect(next_url)
     else:
         form = AuthenticationForm()
-    return render(request, 'blog/registration/login.html', {'form': form})
+    return render(request, 'blog/login.html', {'form': form})
 
 def user_logout(request):
     logout(request)
@@ -44,7 +44,7 @@ def profile_view(request):
             return redirect('profile')
     else:
         form = ProfileForm(instance=request.user)
-    return render(request, 'blog/registration/profile.html', {'form': form}) 
+    return render(request, 'blog/profile.html', {'form': form}) 
 
 
 class ListPostView(ListView):
@@ -59,7 +59,7 @@ class ListPostView(ListView):
 
 class DetailPostView(DetailView):
     model = Post
-    template_name = 'blog/detail.html'
+    template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
     def get_context_data(self, **kwargs):
@@ -69,7 +69,7 @@ class DetailPostView(DetailView):
     
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
-    template_name = 'blog/create.html'
+    template_name = 'blog/post_create.html'
     fields = ['title', 'content']
     success_url = reverse_lazy('index')
 
@@ -84,12 +84,12 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             post.author = request.user
             post.save()
             return redirect('index')
-        return render(request, 'blog/create.html', {'form': form})
+        return render(request, 'blog/post_create.html', {'form': form})
     
 
 class UpdatePostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    template_name = 'blog/update.html'
+    template_name = 'blog/post_update.html'
     fields = ['title', 'content']
     success_url = reverse_lazy('index')
 
@@ -107,11 +107,11 @@ class UpdatePostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if form.is_valid():
             form.save()
             return redirect('index')
-        return render(request, 'blog/update.html', {'form': form})
+        return render(request, 'blog/post_update.html', {'form': form})
     
 class DeletePostView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = 'blog/delete.html'
+    template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('index')
 
     def test_func(self):
